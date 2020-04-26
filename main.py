@@ -7,9 +7,9 @@ GPIO.setwarnings(False)
 #in retrospect, I should have built this with arrays ...
 
 #Pin Defs
-servoPIN1=11
-servoPIN2=13
-servoPIN3=15
+servoPIN1=11  #overhead
+servoPIN2=13  #circsaw
+servoPIN3=15  #bandsaw
 
 #State Vars
 gateNow1=0
@@ -51,26 +51,30 @@ def on_message(client, userdata, msg):
    if msg.topic == 'brett/toolSelect/tool':
        # Look at the message data and perform the appropriate action.
        if msg.payload == b'CircSaw':
-	   s1.start(open)
-	   time.sleep(1)
-	   s2.start(close)
-	   time.sleep(1)
-	   s3.start(close)
-	   print ('Switching to BandSaw')
-
-       elif msg.payload == b'BandSaw':
-           s1.start(close)
-           time.sleep(1)
-           s2.start(open)
-           time.sleep(1)
-           s3.start(open)
-
-       elif msg.payload == b'Ovrhead':
 	   s1.start(close)
 	   time.sleep(1)
 	   s2.start(open)
 	   time.sleep(1)
 	   s3.start(close)
+	   time.sleep(1)
+	   print ('Switching to CircSaw')
+
+       elif msg.payload == b'BandSaw':
+           s1.start(close)
+           time.sleep(1)
+           s2.start(close)
+           time.sleep(1)
+           s3.start(open)
+	   time.sleep(1)
+	   print ('Switching to BandSaw')
+
+       elif msg.payload == b'Ovrhead':
+	   s1.start(open)
+	   time.sleep(1)
+	   s2.start(close)
+	   time.sleep(1)
+	   s3.start(close)
+	   time.sleep(1)
 	   print ('Switching to Overhead')
 
    s1.ChangeDutyCycle(0)
